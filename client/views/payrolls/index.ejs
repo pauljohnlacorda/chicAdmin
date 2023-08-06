@@ -1,0 +1,146 @@
+<% layout('/layouts/boilerplate') %>
+
+  <h1>All Services</h1>
+  <button id="addServiceButton">Add Service</button>
+
+  <div class="modal-overlay" id="addServiceModal">
+    <div class="modal-content">
+      <button class="close-button" id="closeModalButton">&times;</button>
+      <form id="addServiceModalForm" action="/payrolls" method="POST" novalidate class="validated-form">
+        <div>
+          <label for="category">Category:</label>
+          <select id="category" name="service[category]" required>
+            <option value="">Select a category</option>
+            <option value="Category 1">Category 1</option>
+            <option value="Category 2">Category 2</option>
+            <option value="Category 3">Category 3</option>
+          </select>
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+        <div>
+          <label for="serviceName">Service Name:</label>
+          <input type="text" id="serviceName" name="service[serviceName]" required>
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+        <div>
+          <label for="price">Price:</label>
+          <input type="number" id="price" name="service[price]" required>
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+        <button type="submit">Add Service</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="updateServiceModal">
+    <div class="modal-content">
+      <button class="close-button" id="closeupdateModalButton">&times;</button>
+      <form id="updateServiceModalForm" action="/payrolls" method="POST" novalidate class="validated-form">
+        <div>
+          <label for="category">Category:</label>
+          <select id="category" name="service[category]" required>
+            <option value="">Select a category</option>
+            <option value="Category 1">Category 1</option>
+            <option value="Category 2">Category 2</option>
+            <option value="Category 3">Category 3</option>
+          </select>
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+        <div>
+          <label for="serviceName">Service Name:</label>
+          <input type="text" id="serviceName" name="service[serviceName]" required>
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+        <div>
+          <label for="price">Price:</label>
+          <input type="number" id="price" name="service[price]" required>
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+        <button type="submit">Update Service</button>
+      </form>
+    </div>
+  </div>
+
+
+
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Service Name</th>
+        <th scope="col">Category</th>
+        <th scope="col">Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (let i=0; i < services.length; i++) { %>
+        <tr>
+          <td>
+            <%= i + 1 %>
+          </td>
+          <td>
+            <%= services[i].serviceName %>
+          </td>
+          <td>
+            <%= services[i].category %>
+          </td>
+          <td>
+            <%= services[i].price %>
+          </td>
+          <td>
+          </td>
+          <td>
+            <a href="#" class="open-modal" data-service-id="<%= services[i]._id %>">
+              <i class="bi bi-pencil-square"></i>
+            </a>
+          </td>
+
+          <td>
+            <form action="/payrolls/<%= services[i]._id %>?_method=DELETE" method="POST">
+              <button><i class="fa-solid fa-trash-can"></i></button>
+            </form>
+          </td>
+        </tr>
+        <% } %>
+    </tbody>
+  </table>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let addServiceButton = document.getElementById('addServiceButton');
+      let addServiceModal = document.getElementById('addServiceModal');
+      let closeModalButton = document.getElementById('closeModalButton');
+
+      addServiceButton.addEventListener('click', function () {
+        addServiceModal.style.display = 'block';
+      });
+
+      closeModalButton.addEventListener('click', function () {
+        addServiceModal.style.display = 'none';
+      });
+
+      let openModalLinks = document.getElementsByClassName('open-modal');
+      let updateServiceModal = document.getElementById('updateServiceModal');
+      let closeUpdateModalButton = document.getElementById('closeupdateModalButton');
+      let serviceIdInput = document.getElementById('serviceIdInput');
+
+      for (let i = 0; i < openModalLinks.length; i++) {
+        openModalLinks[i].addEventListener('click', function (e) {
+          e.preventDefault();
+          updateServiceModal.style.display = 'block';
+
+          // Get the service ID from the clicked element
+          let serviceId = this.getAttribute('data-service-id');
+
+          // Update the input field with the current service ID
+          serviceIdInput.value = serviceId;
+        });
+      }
+      closeUpdateModalButton.addEventListener('click', function () {
+        updateServiceModal.style.display = 'none';
+      });
+    });
+
+
+  </script>
