@@ -6,7 +6,7 @@
   <div class="modal-overlay" id="addServiceModal">
     <div class="modal-content">
       <button class="close-button" id="closeModalButton">&times;</button>
-      <form id="addServiceModalForm" action="/payrolls" method="POST" novalidate class="validated-form">
+      <form id="addServiceModalForm" action="/ListService" method="POST" novalidate class="validated-form">
         <div>
           <label for="category">Category:</label>
           <select id="category" name="service[category]" required>
@@ -35,7 +35,7 @@
   <div class="modal-overlay" id="updateModal">
     <div class="modal-content">
       <button class="close-button" id="closeupdateModalButton">&times;</button>
-      <form id="updateServiceModalForm" action="/payrolls?_method=PUT" method="POST" novalidate class="validated-form">
+      <form id="updateServiceModalForm" action="/ListService?_method=PUT" method="POST" novalidate class="validated-form">
         <div>
           <label for="category">Category:</label>
           <select id="category" name="service[category]" required>
@@ -95,7 +95,7 @@
             </a>
           </td>
           <td>
-            <form action="/payrolls/<%= services[i]._id %>?_method=DELETE" method="POST">
+            <form action="/ListService/<%= services[i]._id %>?_method=DELETE" method="POST">
               <button><i class="fa-solid fa-trash-can"></i></button>
             </form>
           </td>
@@ -135,7 +135,7 @@
 
       function openUpdateModal(serviceId) {
         // Get the update modal element
-        updateForm.action = `/payrolls/${serviceId}?_method=PUT`;
+        updateForm.action = `/ListService/${serviceId}?_method=PUT`;
 
         // Open the update modal
         updateModal.style.display = 'block';
