@@ -32,34 +32,35 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="updateServiceModal">
+  <div class="modal-overlay" id="updateModal">
     <div class="modal-content">
       <button class="close-button" id="closeupdateModalButton">&times;</button>
-      <form id="updateServiceModalForm" action="/payrolls" method="POST" novalidate class="validated-form">
+      <form id="updateServiceModalForm" action="/payrolls?_method=PUT" method="POST" novalidate class="validated-form">
         <div>
           <label for="category">Category:</label>
           <select id="category" name="service[category]" required>
             <option value="">Select a category</option>
-            <option value="Category 1">Category 1</option>
-            <option value="Category 2">Category 2</option>
-            <option value="Category 3">Category 3</option>
+            <option value="Category 1" <% if (service.category==='Category 1' ) { %>selected<% } %>>Category 1</option>
+            <option value="Category 2" <% if (service.category==='Category 2' ) { %>selected<% } %>>Category 2</option>
+            <option value="Category 3" <% if (service.category==='Category 3' ) { %>selected<% } %>>Category 3</option>
           </select>
           <div class="valid-feedback">Looks good!</div>
         </div>
         <div>
           <label for="serviceName">Service Name:</label>
-          <input type="text" id="serviceName" name="service[serviceName]" required>
+          <input type="text" id="serviceName" name="service[serviceName]" value="<%= service.serviceName %>" required>
           <div class="valid-feedback">Looks good!</div>
         </div>
         <div>
           <label for="price">Price:</label>
-          <input type="number" id="price" name="service[price]" required>
+          <input type="number" id="price" name="service[price]" value="<%= service.price %>" required>
           <div class="valid-feedback">Looks good!</div>
         </div>
         <button type="submit">Update Service</button>
       </form>
     </div>
   </div>
+
 
 
 
@@ -89,13 +90,10 @@
             <%= services[i].price %>
           </td>
           <td>
-          </td>
-          <td>
             <a href="#" class="open-modal" data-service-id="<%= services[i]._id %>">
               <i class="bi bi-pencil-square"></i>
             </a>
           </td>
-
           <td>
             <form action="/payrolls/<%= services[i]._id %>?_method=DELETE" method="POST">
               <button><i class="fa-solid fa-trash-can"></i></button>
@@ -108,6 +106,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      // Add Service Modal
       let addServiceButton = document.getElementById('addServiceButton');
       let addServiceModal = document.getElementById('addServiceModal');
       let closeModalButton = document.getElementById('closeModalButton');
@@ -120,27 +119,30 @@
         addServiceModal.style.display = 'none';
       });
 
+      // Update Modal
       let openModalLinks = document.getElementsByClassName('open-modal');
-      let updateServiceModal = document.getElementById('updateServiceModal');
-      let closeUpdateModalButton = document.getElementById('closeupdateModalButton');
-      let serviceIdInput = document.getElementById('serviceIdInput');
+      let updateModal = document.getElementById('updateModal');
+      let updateForm = document.getElementById('updateServiceModalForm');
+      let closeupdateModalButton = document.getElementById('closeupdateModalButton');
+
 
       for (let i = 0; i < openModalLinks.length; i++) {
-        openModalLinks[i].addEventListener('click', function (e) {
-          e.preventDefault();
-          updateServiceModal.style.display = 'block';
-
-          // Get the service ID from the clicked element
+        openModalLinks[i].addEventListener('click', function () {
           let serviceId = this.getAttribute('data-service-id');
-
-          // Update the input field with the current service ID
-          serviceIdInput.value = serviceId;
+          openUpdateModal(serviceId);
         });
       }
-      closeUpdateModalButton.addEventListener('click', function () {
-        updateServiceModal.style.display = 'none';
+
+      function openUpdateModal(serviceId) {
+        // Get the update modal element
+        updateForm.action = `/payrolls/${serviceId}?_method=PUT`;
+
+        // Open the update modal
+        updateModal.style.display = 'block';
+      }
+      closeupdateModalButton.addEventListener('click', function () {
+        updateModal.style.display = 'none';
       });
+
     });
-
-
   </script>

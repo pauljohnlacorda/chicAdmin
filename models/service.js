@@ -12,8 +12,8 @@ const serviceSchema = new mongoose.Schema({
   price: {
     type: Number,
     required: true,
-    min: 0,
-  }
+}
+
 });
 
 const Service = mongoose.model('Service', serviceSchema);

@@ -41,7 +41,7 @@
                     <h6 class="collapse-header">Records Section:</h6>
                     <a class="collapse-item" href="/records"> Employee Records </a>
                     <a class="collapse-item" href="/records/new-record-form">Add Employee</a>
-                    <a class="collapse-item" href="/payrolls/">List of Services</a>
+                    <a class="collapse-item" href="/ListService/">List of Services</a>
                     <a class="collapse-item" href="/images"> Image</a>
                 </div>
             </div>
@@ -176,7 +176,7 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%= username %></span>
                             <box-icon type='solid' name='user-circle'></box-icon>                               
                         </a>
                         <!-- Dropdown - User Information -->
@@ -195,12 +195,10 @@
                                 Activity Log
                             </a>
                             <div class="dropdown-divider"></div>
-                            <form action="/" method="post">
-                                <button type="submit">
-                                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                  Logout
-                                </button>
-                            </form>
+                            <a class="dropdown-item" href="/">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Logout
+                            </a>
                         </div>
                     </li>
 

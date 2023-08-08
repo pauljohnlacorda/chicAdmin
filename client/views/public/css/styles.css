@@ -11647,7 +11647,7 @@ input[type="number"] {
 /* modal add service */
 /* ... Your existing CSS code ... */
 
-/* Airbnb-like Modal Styles */
+/* addservice Modal Styles */
 .modal-overlay {
   display: none;
   position: fixed;

@@ -26,7 +26,8 @@ exports.registerUser = catchAsync(async (req, res) => {
     const {email, username, password, firstName, lastName} = req.body;
     const user = new User({email, username,firstName, lastName});
     const registeredUser = await User.register(user, password,);
-    console.log(registeredUser);
+    req.flash('success', 'You have Successfully Registered!!');
+    // console.log(registeredUser);
     res.redirect('/');
 
    } catch (e) {
@@ -48,7 +49,13 @@ exports.loginUser = (req, res) => {
   res.redirect('dashboard');
 };
 
-exports.logout = (req, res) => {
-  req.session.destroy();
+//logout
+exports.logout = (req, res, next) => {
+  req.logout(function(err) {
+      if(err) {
+          return next(err) ;
+      }
+  })
+  req.flash('success', 'You are now logged out');
   res.redirect('/');
 }

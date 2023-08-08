@@ -7,8 +7,6 @@ const User = require('../../models/user');
 const ServicePage = require ('../../models/servicePage');
 const catchAsync = require('../../utils/catchAsync');
 const cloudinary = require('../../utils/cloudinary');
-const bcrypt = require('bcrypt');
-
 
 
 
@@ -44,21 +42,10 @@ mongoose
 // Define the controller function for rendering the dashboard page
 exports.renderDashboardPage = (req, res) => {
   // Retrieve the user object from the request
-  const user = req.user;
+  const username = req.user.username; // Assuming you have the username stored in the req.user object
 
-  res.render('dashboard/home', { user });
+  res.render('dashboard/home', { username });
 };
-
-
-//logout
-exports.logout = (req, res) => {
-  res.render('admin/login');
-};
-
-
-
-
-
 
 
 
@@ -116,13 +103,19 @@ exports.deleteRecord = catchAsync(async (req, res) => {
 
 /// display all Services
 exports.allServices = async (req, res) => {
-  const services = await Service.find({});
-  res.status(200).render('payrolls/index', { services });
-}
+  try {
+    const services = await Service.find({});
+    res.status(200).render('ListService/index', { services: services, service: {} });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
 
 // View add Services form
 exports.newServiceForm = (req, res) => {
-  res.status(200).render('payrolls/index', { services: [] }); 
+  res.status(200).render('ListService/index', { services: [] }); 
 }
 
 
@@ -131,39 +124,26 @@ exports.saveService = catchAsync(async (req, res) => {
   const service = new Service(req.body.service);
   await service.save();
   req.flash('success', 'You have successfully added a service!');
-  res.redirect('/payrolls');
+  res.redirect('/ListService');
 
 })
 
-// View update Service form
-exports.updateServiceForm = catchAsync(async (req, res) => {
+// Fetch current service values
+exports.getService = catchAsync(async (req, res) => {
   const serviceId = req.params.id;
   const service = await Service.findById(serviceId);
-  res.status(200).render('payrolls/index', { service });
+  res.status(200).render('ListService/index', { service: service });
 });
-
 
 
 //Save updated form
 exports.updateService = catchAsync(async (req, res) => {
   const serviceId = req.params.id;
-  const updatedService = { ...req.body.service };
-
-  // Add the selected category to the updated service object
-  updatedService.category = req.body.category;
-
-  // Find the service by its ID and update the properties
-  const service = await Service.findByIdAndUpdate(serviceId, updatedService, { new: true });
-
-  // Handle validation errors
-  if (!service) {
-    req.flash('error', 'Service not found.');
-    return res.redirect('/payrolls');
-  }
-
-  req.flash('success', 'You have successfully updated a service!');
-  res.redirect('/payrolls');
+  const service = await Service.findByIdAndUpdate(serviceId, { ...req.body.service });
+  req.flash('success', 'You have successfully updated a listing!');
+  res.redirect('/ListService');
 });
+
 
 
 // Delete record form
@@ -171,7 +151,7 @@ exports.deleteService = catchAsync(async (req, res) => {
   const serviceId = req.params.id;
   await Service.findByIdAndDelete(serviceId);
   req.flash('error', 'You have successfully deleted a service!');
-  res.redirect('/payrolls');
+  res.redirect('/ListService');
 })
 /** -------------------------------------------                    */
 //View upload images

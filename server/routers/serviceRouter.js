@@ -4,6 +4,7 @@ const serviceController = require('../controllers/serviceController');
 const { employeeSchemaValidation, serviceSchemaValidation   } = require('../../schemas');
 const ExpressError = require('../../utils/ExpressError');
 const upload = require('../../utils/multer');
+const {isLoggedIn} = require('../../middleware');
 
 
 // Middlewares
@@ -48,33 +49,34 @@ const validateService = (req, res, next) => {
 
 
 
-router.get('/dashboard', serviceController.renderDashboardPage);
+router.get('/dashboard', isLoggedIn,serviceController.renderDashboardPage);
 
 
 
 
 // Employee Routes
-router.get('/records', serviceController.allRecords);
-router.get('/records/new-record-form', serviceController.newRecordForm);
-router.post('/records', validateEmployee, serviceController.saveRecord);
-router.get('/records/:id', serviceController.viewRecord);
-router.get('/records/:id/update-record', serviceController.updateRecordForm);
-router.put('/records/:id', validateEmployee, serviceController.updateRecord);
-router.delete('/records/:id', serviceController.deleteRecord);
+router.get('/records', isLoggedIn,serviceController.allRecords);
+router.get('/records/new-record-form', isLoggedIn, serviceController.newRecordForm);
+router.post('/records', validateEmployee, isLoggedIn, serviceController.saveRecord);
+router.get('/records/:id', isLoggedIn, serviceController.viewRecord);
+router.get('/records/:id/update-record', isLoggedIn,serviceController.updateRecordForm);
+router.put('/records/:id', validateEmployee,isLoggedIn, serviceController.updateRecord);
+router.delete('/records/:id',isLoggedIn, serviceController.deleteRecord);
 
 // Services Routes
-router.get('/payrolls', serviceController.allServices);
-router.get('/payrolls', serviceController.newServiceForm);
-router.post('/payrolls', validateService, serviceController.saveService);
-router.get('/payrolls/:id/', serviceController.updateServiceForm);
-router.put('/payrolls/:id', validateService, serviceController.updateService);
-router.delete('/payrolls/:id', serviceController.deleteService);
+router.get('/ListService', isLoggedIn, serviceController.allServices);
+router.get('/ListService', isLoggedIn,serviceController.newServiceForm);
+// Fetch current service values
+router.get('/ListService/:id', isLoggedIn, serviceController.getService);
+router.post('/ListService',isLoggedIn, validateService, serviceController.saveService);
+router.put('/ListService/:id',isLoggedIn, validateService, serviceController.updateService);
+router.delete('/ListService/:id',isLoggedIn, serviceController.deleteService);
 
 //upload image
 
-router.get('/images', serviceController.viewImage);
-router.post('/images', upload.single('image'), serviceController.uploadImage);
-router.delete('/images/:id', serviceController.deleteImage);
+router.get('/images', isLoggedIn, serviceController.viewImage);
+router.post('/images', isLoggedIn, upload.single('image'), serviceController.uploadImage);
+router.delete('/images/:id',isLoggedIn, serviceController.deleteImage);
 
 
 
