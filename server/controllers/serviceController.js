@@ -132,8 +132,9 @@ exports.saveService = catchAsync(async (req, res) => {
 exports.getService = catchAsync(async (req, res) => {
   const serviceId = req.params.id;
   const service = await Service.findById(serviceId);
-  res.status(200).render('ListService/index', { service: service });
+  res.status(200).render('updateModalTemplate', { service });
 });
+
 
 
 //Save updated form

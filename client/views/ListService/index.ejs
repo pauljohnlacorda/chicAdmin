@@ -35,7 +35,8 @@
   <div class="modal-overlay" id="updateModal">
     <div class="modal-content">
       <button class="close-button" id="closeupdateModalButton">&times;</button>
-      <form id="updateServiceModalForm" action="/ListService?_method=PUT" method="POST" novalidate class="validated-form">
+      <form id="updateServiceModalForm" action="/ListService/<%= service._id %>?_method=PUT" method="POST" novalidate
+        class="validated-form">
         <div>
           <label for="category">Category:</label>
           <select id="category" name="service[category]" required>
@@ -125,9 +126,10 @@
       let updateForm = document.getElementById('updateServiceModalForm');
       let closeupdateModalButton = document.getElementById('closeupdateModalButton');
 
-
       for (let i = 0; i < openModalLinks.length; i++) {
-        openModalLinks[i].addEventListener('click', function () {
+        openModalLinks[i].addEventListener('click', function (event) {
+          event.preventDefault(); // Prevent the default link behavior
+
           let serviceId = this.getAttribute('data-service-id');
           openUpdateModal(serviceId);
         });
@@ -136,13 +138,25 @@
       function openUpdateModal(serviceId) {
         // Get the update modal element
         updateForm.action = `/ListService/${serviceId}?_method=PUT`;
+        // Fetch the current service values
+        fetch(`/service${serviceId}`)
+          .then(response => response.json())
+          .then(service => {
+            // Set the current values as the input field values
+            document.getElementById('category').value = service.category;
+            document.getElementById('serviceName').value = service.serviceName;
+            document.getElementById('price').value = service.price;
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
 
         // Open the update modal
         updateModal.style.display = 'block';
       }
+
       closeupdateModalButton.addEventListener('click', function () {
         updateModal.style.display = 'none';
       });
-
     });
   </script>

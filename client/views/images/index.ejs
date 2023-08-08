@@ -11,18 +11,29 @@
 
   <div class="lightbox-gallery">
     <div class="container">
-      <div class="intro">
-        <h2 class="text-center">Chic Station Gallery</h2>    
-        <% if (images.length > 0) { %>
-          <% images.map((image) => { %>
-            <img src="<%= image.avatar %>" alt="<%= image.title %>">
-            <form action="/images/<%= image._id %>?_method=DELETE" method="POST">
-              <button type="submit">Delete</button>
-            </form>
-          <% }) %>
-        <% } else { %>
-          <p>No images found.</p>
-        <% } %>     
-      </div>     
-    </div>
+        <h2 class="text-center">Chic Station Gallery</h2>
+        <div class="photos">
+          <% if (images.length > 0) { %>
+            <% images.map((image, index) => { %>
+              <div class="item ">
+                <img src="<%= image.avatar %>" alt="<%= image.title %>">
+                <form action="/images/<%= image._id %>?_method=DELETE" method="POST">
+                  <button type="submit" class="delete-button">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </form>
+                
+              </div>
+              <% if ((index + 1) % 4 === 0) { %>
+                <div class="clearfix"></div>
+              <% } %>
+            <% }) %>
+          <% } else { %>
+            <p>No images found.</p>
+          <% } %>
+        </div>
+      </div>
+ 
   </div>
+  
+  
