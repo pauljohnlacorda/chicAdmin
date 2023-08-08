@@ -97,6 +97,6 @@ app.use((err, req, res, next) => {
 
 
 
-app.listen(8080, () => {
-  console.log('Server is now up and running.Listening on post 8080');
-})
+app.listen(process.env.PORT || 8080, function () {
+  console.log('Server is running on port 8080');
+});
