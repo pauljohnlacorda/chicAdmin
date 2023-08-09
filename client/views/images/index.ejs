@@ -1,57 +1,60 @@
 <% layout('/layouts/boilerplate') %>
+  <main class="container">
+    <h1>Add Image</h1>
 
-<h1>Add Image</h1>
-
-<form action="/images" method="post" enctype="multipart/form-data">
-  <input type="file" name="image" accept="image/*" />
-  <input type="text" name="title" placeholder="title" required>
-  <button type="submit">Upload</button>
-</form>
+    <form action="/images" method="post" enctype="multipart/form-data">
+      <input type="file" name="image" accept="image/*" />
+      <input type="text" name="title" placeholder="title" required>
+      <button type="submit">Upload</button>
+    </form>
 
 
-<div class="lightbox-gallery">
-  <div class="container">
-    <h2 class="text-center">Chic Station Gallery</h2>
-    <div class="photos">
-      <% if (images.length > 0) { %>
-        <% images.map((image, index) => { %>
-          <div class="item">
-            <img src="<%= image.avatar %>" alt="<%= image.title %>">
-            <button type="button" class="delete-button" data-toggle="modal" data-target="#confirmDeleteModal<%= index %>">
-              <i class="fas fa-trash-alt"></i>
-            </button>
+    <div class="lightbox-gallery">
+      <div class="container">
+        <h2 class="text-center">Chic Station Gallery</h2>
+        <div class="photos">
+          <% if (images.length> 0) { %>
+            <% images.map((image, index)=> { %>
+              <div class="item">
+                <img src="<%= image.avatar %>" alt="<%= image.title %>">
+                <button type="button" class="delete-button" data-toggle="modal"
+                  data-target="#confirmDeleteModal<%= index %>">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
 
-            <!-- Confirmation Modal -->
-            <div class="modal fade" id="confirmDeleteModal<%= index %>" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel<%= index %>" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteModalLabel<%= index %>">Confirm Delete</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <p>Are you sure you want to delete this image?</p>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <form action="/images/<%= image._id %>?_method=DELETE" method="POST">
-                      <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
+                <!-- Confirmation Modal -->
+                <div class="modal fade" id="confirmDeleteModal<%= index %>" tabindex="-1" role="dialog"
+                  aria-labelledby="confirmDeleteModalLabel<%= index %>" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel<%= index %>">Confirm Delete</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p>Are you sure you want to delete this image?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <form action="/images/<%= image._id %>?_method=DELETE" method="POST">
+                          <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <% if ((index + 1) % 4 === 0) { %>
-            <div class="clearfix"></div>
-          <% } %>
-        <% }) %>
-      <% } else { %>
-        <p>No images found.</p>
-      <% } %>
+              <% if ((index + 1) % 4===0) { %>
+                <div class="clearfix"></div>
+                <% } %>
+                  <% }) %>
+                    <% } else { %>
+                      <p>No images found.</p>
+                      <% } %>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+  </main>
