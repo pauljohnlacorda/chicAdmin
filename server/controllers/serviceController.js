@@ -147,13 +147,15 @@ exports.updateService = catchAsync(async (req, res) => {
 
 
 
-// Delete record form
+// Delete services 
 exports.deleteService = catchAsync(async (req, res) => {
   const serviceId = req.params.id;
   await Service.findByIdAndDelete(serviceId);
   req.flash('error', 'You have successfully deleted a service!');
   res.redirect('/ListService');
 })
+
+
 /** -------------------------------------------                    */
 //View upload images
 exports.viewImage = async (req, res) => {
@@ -180,22 +182,28 @@ exports.uploadImage = catchAsync(async (req, res, next) => {
 });
 
 
-
-//DELETE UPLOAD IMAGE
+// DELETE UPLOAD IMAGE
 exports.deleteImage = catchAsync(async (req, res, next) => {
-  
-    // Fetch image from Cloudinary
-    const image = await Image.findById(req.params.id);
+  // Fetch image from the database
+  const image = await Image.findById(req.params.id);
 
+  // Prompt for confirmation
+  const confirmed = req.query.confirm;
+  if (!confirmed) {
     // Delete image from Cloudinary
-    await cloudinary.uploader.destroy(image.cloudinary_id);
+  await cloudinary.uploader.destroy(image.cloudinary_id);
 
-    // Delete image from the database
-    await Image.findByIdAndRemove(req.params.id);
-    req.flash('error', 'You have successfully deleted an image!');
+  // Delete image from the database
+  await Image.findByIdAndRemove(req.params.id);
+  req.flash('error', 'You have successfully deleted an image!');
     res.redirect('/images');
+    return;
+  }
   
+  req.flash('error', 'You have successfully deleted an image!');
+  res.redirect('/images');
 });
+
 
 
 
