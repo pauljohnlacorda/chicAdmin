@@ -1,23 +1,31 @@
 <% layout('/layouts/boilerplate') %>
-  <main class="container">
-    <h1>Add Image</h1>
 
-    <form action="/images" method="post" enctype="multipart/form-data">
-      <input type="file" name="image" accept="image/*" />
+<style>
+   button{
+    box-shadow: 5px 5px 10px rgba(0,0,0,.1);
+    border: 1px solid rgba(0,0,0,.5) !important;
+  }
+</style>
+  <main class="container">
+    <h2 class="text-start my-4">Chic Station Gallery</h2>
+    <h4 class="mx-2">Click "Choose File" to add picture.</h4>
+
+    <form action="/images" method="post" enctype="multipart/form-data " class="my-2">
+      <input type="file" name="image" accept="image/*"  class="btn btn-light"/>
       <input type="text" name="title" placeholder="title" required>
-      <button type="submit">Upload</button>
+      <button type="submit" class="btn btn-light p-1">Upload</button>
     </form>
 
 
     <div class="lightbox-gallery">
       <div class="container">
-        <h2 class="text-center">Chic Station Gallery</h2>
+       
         <div class="photos">
           <% if (images.length> 0) { %>
             <% images.map((image, index)=> { %>
               <div class="item">
                 <img src="<%= image.avatar %>" alt="<%= image.title %>">
-                <button type="button" class="delete-button" data-toggle="modal"
+                <button type="button" class="delete-button btn btn-light mt-2" data-toggle="modal"
                   data-target="#confirmDeleteModal<%= index %>">
                   <i class="fas fa-trash-alt"></i>
                 </button>
